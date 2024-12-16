@@ -1,0 +1,46 @@
+{% extends "app/base1.html" %}
+{% block content %}
+<section class="container mt-4">
+  <form action="" method="get" class="d-flex justify-content-between gap-3">
+    <input type="text" name="nome-produto" placeholder="Filtrar por nome" class="form-control">
+    <button class="btn btn-success">Pesquisar</button>
+  </form>
+  <a href="{% url "app:produto_create" %}" class="btn btn-success my-3">Inserir um produto</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome do Produto</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for produto in produtos %}
+        <tr>
+          <th scope="row">{{ produto.id }}</th>
+          <td>{{ produto.nome_produto }}</td>
+          <td>
+            <a href="{% url "app:produto_update" produto.id %}" class="btn btn-success">Atualizar</a>
+            <a href="{% url "app:produto_delete" produto.id %}" class="btn btn-danger">Apagar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+<nav aria-label="Page navigation example" class="d-flex justify-content-end pe-5">
+  <ul class="pagination">
+    {% if produtos.has_previous %}
+      <li class="page-item"><a class="page-link bg-success text-white" href="?page={{ produtos.previous_page_number }}"><<</a></li>
+    {% endif %}
+
+    {% for page in produtos.paginator.page_range %}
+      <li class="page-item"><a class="page-link bg-success text-white" href="?page={{ page }}">{{ page }}</a></li>
+    {% endfor %}
+
+    {% if produtos.has_next %}
+      <li class="page-item"><a class="page-link bg-success text-white" href="?page={{ produtos.next_page_number }}">>></a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock content %}
